@@ -16,9 +16,26 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    if (password.length < 8) {
+    if (
+      typeof firstName !== 'string' || firstName.trim().length > 100 ||
+      typeof lastName !== 'string' || lastName.trim().length > 100
+    ) {
       return NextResponse.json(
-        err('WEAK_PASSWORD', 'Password must be at least 8 characters.'),
+        err('INVALID_NAME', 'Please enter a valid name.'),
+        { status: 400 }
+      )
+    }
+
+    if (typeof email !== 'string' || email.length > 254) {
+      return NextResponse.json(
+        err('INVALID_EMAIL', 'Please enter a valid email address.'),
+        { status: 400 }
+      )
+    }
+
+    if (typeof password !== 'string' || password.length < 8 || password.length > 128) {
+      return NextResponse.json(
+        err('WEAK_PASSWORD', 'Password must be between 8 and 128 characters.'),
         { status: 400 }
       )
     }

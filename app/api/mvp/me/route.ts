@@ -30,6 +30,10 @@ export async function GET() {
     return NextResponse.json(err('NOT_FOUND', 'Member not found.'), { status: 404 })
   }
 
+  if (member.status !== 'active') {
+    return NextResponse.json(err('UNAUTHENTICATED', 'Not signed in.'), { status: 401 })
+  }
+
   return NextResponse.json(
     ok({
       member: {
